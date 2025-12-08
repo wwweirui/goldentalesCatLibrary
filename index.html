@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>梦幻猫舍 - 每只猫咪都有独特的故事</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/splide.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&family=Dancing+Script:wght@400;600&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'warm-beige': '#F5F1EB',
+                        'soft-coral': '#E8A87C',
+                        'deep-gray': '#4A4A4A',
+                        'mint-green': '#A8D8B9'
+                    },
+                    fontFamily: {
+                        'display': ['Playfair Display', 'serif'],
+                        'body': ['Inter', 'sans-serif'],
+                        'script': ['Dancing Script', 'cursive']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .hero-bg {
+            background: linear-gradient(135deg, rgba(245, 241, 235, 0.9) 0%, rgba(232, 168, 124, 0.1) 100%),
+                        url('resources/hero-bg.jpg') center/cover no-repeat;
+            min-height: 100vh;
+        }
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        .filter-btn.active {
+            background: linear-gradient(135deg, #E8A87C, #A8D8B9);
+            color: white;
+        }
+        .floating-hearts {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            pointer-events: none;
+        }
+        .heart {
+            position: absolute;
+            color: rgba(232, 168, 124, 0.3);
+            animation: float 6s infinite ease-in-out;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0; }
+            50% { transform: translateY(-20px) rotate(180deg); opacity: 1; }
+        }
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+            transition: all 0.6s ease;
+        }
+    </style>
+</head>
+<body class="bg-warm-beige text-deep-gray font-body">
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full bg-white/80 backdrop-blur-md z-50 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <h1 class="text-2xl font-display font-bold text-soft-coral">🐱 梦幻猫舍</h1>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-8">
+                        <a href="index.html" class="text-soft-coral font-medium hover:text-deep-gray transition-colors">首页</a>
+                        <a href="profiles.html" class="text-deep-gray hover:text-soft-coral transition-colors">猫咪档案</a>
+                        <a href="stories.html" class="text-deep-gray hover:text-soft-coral transition-colors">成长故事</a>
+                        <a href="gallery.html" class="text-deep-gray hover:text-soft-coral transition-colors">照片画廊</a>
+                    </div>
+                </div>
+                <div class="md:hidden">
+                    <button id="mobile-menu-btn" class="text-deep-gray hover:text-soft-coral">
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div id="mobile-menu" class="md:hidden hidden bg-white/95 backdrop-blur-md">
+            <div class="px-2 pt-2 pb-3 space-y-1">
+                <a href="index.html" class="block px-3 py-2 text-soft-coral font-medium">首页</a>
+                <a href="profiles.html" class="block px-3 py-2 text-deep-gray hover:text-soft-coral">猫咪档案</a>
+                <a href="stories.html" class="block px-3 py-2 text-deep-gray hover:text-soft-coral">成长故事</a>
+                <a href="gallery.html" class="block px-3 py-2 text-deep-gray hover:text-soft-coral">照片画廊</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-bg relative flex items-center justify-center">
+        <div class="floating-hearts">
+            <div class="heart text-2xl" style="left: 10%; animation-delay: 0s;">♥</div>
+            <div class="heart text-xl" style="left: 20%; animation-delay: 1s;">♥</div>
+            <div class="heart text-3xl" style="left: 30%; animation-delay: 2s;">♥</div>
+            <div class="heart text-xl" style="left: 40%; animation-delay: 3s;">♥</div>
+            <div class="heart text-2xl" style="left: 50%; animation-delay: 4s;">♥</div>
+            <div class="heart text-xl" style="left: 60%; animation-delay: 5s;">♥</div>
+            <div class="heart text-3xl" style="left: 70%; animation-delay: 1.5s;">♥</div>
+            <div class="heart text-xl" style="left: 80%; animation-delay: 2.5s;">♥</div>
+            <div class="heart text-2xl" style="left: 90%; animation-delay: 3.5s;">♥</div>
+        </div>
+        <div class="text-center z-10 px-4">
+            <h1 class="text-5xl md:text-7xl font-display font-bold mb-6 text-deep-gray">
+                <span class="font-script text-soft-coral">梦幻</span>猫舍
+            </h1>
+            <p class="text-xl md:text-2xl mb-8 text-deep-gray/80 max-w-2xl mx-auto">
+                每只猫咪都有独特的故事，每个故事都值得被珍藏
+            </p>
+            <p class="text-lg mb-12 text-deep-gray/70 max-w-3xl mx-auto">
+                我们致力于培育健康、快乐的纯种猫咪，记录它们从幼崽到成猫的每一个珍贵瞬间
+            </p>
+            <button onclick="scrollToCats()" class="bg-soft-coral hover:bg-soft-coral/90 text-white px-8 py-4 rounded-full text-lg font-medium transition-all duration-300 transform hover:scale-105 shadow-lg">
+                认识我们的猫咪 🐾
+            </button>
+        </div>
+    </section>
+
+    <!-- Filter Section -->
+    <section class="py-16 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12 fade-in">
+                <h2 class="text-4xl font-display font-bold text-deep-gray mb-4">我们的猫咪家族</h2>
+                <p class="text-lg text-deep-gray/70 max-w-2xl mx-auto">
+                    每一只猫咪都是我们的家人，都有自己独特的性格和故事
+                </p>
+            </div>
+            
+            <!-- Filter Buttons -->
+            <div class="flex flex-wrap justify-center gap-4 mb-12 fade-in">
+                <button class="filter-btn active px-6 py-3 rounded-full border-2 border-soft-coral text-soft-coral font-medium transition-all duration-300" data-filter="all">
+                    全部猫咪
+                </button>
+                <button class="filter-btn px-6 py-3 rounded-full border-2 border-soft-coral text-soft-coral font-medium transition-all duration-300" data-filter="british">
+                    英国短毛猫
+                </button>
+                <button class="filter-btn px-6 py-3 rounded-full border-2 border-soft-coral text-soft-coral font-medium transition-all duration-300" data-filter="ragdoll">
+                    布偶猫
+                </button>
+                <button class="filter-btn px-6 py-3 rounded-full border-2 border-soft-coral text-soft-coral font-medium transition-all duration-300" data-filter="maine-coon">
+                    缅因猫
+                </button>
+                <button class="filter-btn px-6 py-3 rounded-full border-2 border-soft-coral text-soft-coral font-medium transition-all duration-300" data-filter="persian">
+                    波斯猫
+                </button>
+                <button class="filter-btn px-6 py-3 rounded-full border-2 border-soft-coral text-soft-coral font-medium transition-all duration-300" data-filter="scottish">
+                    苏格兰折耳猫
+                </button>
+            </div>
+
+            <!-- Cats Grid -->
+            <div id="cats-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Cat Card 1 -->
+                <div class="cat-card bg-white rounded-2xl shadow-lg overflow-hidden card-hover fade-in" data-category="british">
+                    <div class="aspect-square overflow-hidden">
+                        <img src="resources/cat1-main.jpg" alt="小灰 - 英国短毛猫" class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="text-2xl font-display font-bold text-deep-gray">小灰</h3>
+                            <span class="bg-soft-coral/20 text-soft-coral px-3 py-1 rounded-full text-sm font-medium">英国短毛猫</span>
+                        </div>
+                        <p class="text-deep-gray/70 mb-4">2岁公猫，性格温顺友好，喜欢安静的陪伴。从小就是个小绅士，从不调皮捣蛋。</p>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-2 text-sm text-deep-gray/60">
+                                <span>🎂 2岁</span>
+                                <span>⚡ 温顺</span>
+                                <span>💉 已绝育</span>
+                            </div>
+                            <a href="profiles.html?cat=xiaohui" class="text-soft-coral hover:text-soft-coral/80 font-medium transition-colors">
+                                查看详情 →
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cat Card 2 -->
+                <div class="cat-card bg-white rounded-2xl shadow-lg overflow-hidden card-hover fade-in" data-category="ragdoll">
+                    <div class="aspect-square overflow-hidden">
+                        <img src="resources/cat2-main.jpg" alt="小雪 - 布偶猫" class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="text-2xl font-display font-bold text-deep-gray">小雪</h3>
+                            <span class="bg-mint-green/20 text-mint-green px-3 py-1 rounded-full text-sm font-medium">布偶猫</span>
+                        </div>
+                        <p class="text-deep-gray/70 mb-4">1.5岁母猫，典型的布偶猫性格，温柔如天使般甜美。蓝眼睛像宝石一样闪闪发光。</p>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-2 text-sm text-deep-gray/60">
+                                <span>🎂 1.5岁</span>
+                                <span>⚡ 甜美</span>
+                                <span>💉 已绝育</span>
+                            </div>
+                            <a href="profiles.html?cat=xiaoxue" class="text-soft-coral hover:text-soft-coral/80 font-medium transition-colors">
+                                查看详情 →
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cat Card 3 -->
+                <div class="cat-card bg-white rounded-2xl shadow-lg overflow-hidden card-hover fade-in" data-category="maine-coon">
+                    <div class="aspect-square overflow-hidden">
+                        <img src="resources/cat3-main.jpg" alt="大壮 - 缅因猫" class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="text-2xl font-display font-bold text-deep-gray">大壮</h3>
+                            <span class="bg-yellow-100 text-yellow-600 px-3 py-1 rounded-full text-sm font-medium">缅因猫</span>
+                        </div>
+                        <p class="text-deep-gray/70 mb-4">3岁公猫，体型巨大但性格温和，被称为"温柔的巨人"。喜欢玩水，特别聪明。</p>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-2 text-sm text-deep-gray/60">
+                                <span>🎂 3岁</span>
+                                <span>⚡ 温和</span>
+                                <span>💉 已绝育</span>
+                            </div>
+                            <a href="profiles.html?cat=dazhuang" class="text-soft-coral hover:text-soft-coral/80 font-medium transition-colors">
+                                查看详情 →
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cat Card 4 -->
+                <div class="cat-card bg-white rounded-2xl shadow-lg overflow-hidden card-hover fade-in" data-category="persian">
+                    <div class="aspect-square overflow-hidden">
+                        <img src="resources/cat4-main.jpg" alt="公主 - 波斯猫" class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="text-2xl font-display font-bold text-deep-gray">公主</h3>
+                            <span class="bg-purple-100 text-purple-600 px-3 py-1 rounded-full text-sm font-medium">波斯猫</span>
+                        </div>
+                        <p class="text-deep-gray/70 mb-4">2.5岁母猫，名副其实的小公主，高贵优雅。长毛需要精心护理，但绝对值得。</p>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-2 text-sm text-deep-gray/60">
+                                <span>🎂 2.5岁</span>
+                                <span>⚡ 优雅</span>
+                                <span>💉 已绝育</span>
+                            </div>
+                            <a href="profiles.html?cat=gongzhu" class="text-soft-coral hover:text-soft-coral/80 font-medium transition-colors">
+                                查看详情 →
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cat Card 5 -->
+                <div class="cat-card bg-white rounded-2xl shadow-lg overflow-hidden card-hover fade-in" data-category="scottish">
+                    <div class="aspect-square overflow-hidden">
+                        <img src="resources/cat5-main.jpg" alt="豆豆 - 苏格兰折耳猫" class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="text-2xl font-display font-bold text-deep-gray">豆豆</h3>
+                            <span class="bg-green-100 text-green-600 px-3 py-1 rounded-full text-sm font-medium">苏格兰折耳猫</span>
+                        </div>
+                        <p class="text-deep-gray/70 mb-4">1岁母猫，折耳特别明显，像个小精灵。活泼好动，喜欢探索家里的每个角落。</p>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-2 text-sm text-deep-gray/60">
+                                <span>🎂 1岁</span>
+                                <span>⚡ 活泼</span>
+                                <span>💉 已绝育</span>
+                            </div>
+                            <a href="profiles.html?cat=doudou" class="text-soft-coral hover:text-soft-coral/80 font-medium transition-colors">
+                                查看详情 →
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cat Card 6 -->
+                <div class="cat-card bg-white rounded-2xl shadow-lg overflow-hidden card-hover fade-in" data-category="bengal">
+                    <div class="aspect-square overflow-hidden">
+                        <img src="resources/cat6-main.jpg" alt="豹豹 - 孟加拉猫" class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="text-2xl font-display font-bold text-deep-gray">豹豹</h3>
+                            <span class="bg-orange-100 text-orange-600 px-3 py-1 rounded-full text-sm font-medium">孟加拉猫</span>
+                        </div>
+                        <p class="text-deep-gray/70 mb-4">8个月公猫，身上有明显豹纹，充满野性美。精力旺盛，需要大量运动和互动。</p>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-2 text-sm text-deep-gray/60">
+                                <span>🎂 8个月</span>
+                                <span>⚡ 精力旺盛</span>
+                                <span>💉 未绝育</span>
+                            </div>
+                            <a href="profiles.html?cat=baobao" class="text-soft-coral hover:text-soft-coral/80 font-medium transition-colors">
+                                查看详情 →
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-16 bg-gradient-to-r from-soft-coral/10 to-mint-green/10">
+        <div class="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8 fade-in">
+            <h2 class="text-4xl font-display font-bold text-deep-gray mb-6">想要了解更多猫咪的故事吗？</h2>
+            <p class="text-lg text-deep-gray/70 mb-8">
+                每一只猫咪都有独特的成长历程，从刚出生的小奶猫到优雅的成猫，我们用心记录每一个珍贵瞬间。
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="stories.html" class="bg-soft-coral hover:bg-soft-coral/90 text-white px-8 py-4 rounded-full text-lg font-medium transition-all duration-300 transform hover:scale-105 shadow-lg">
+                    查看成长故事 📖
+                </a>
+                <a href="gallery.html" class="bg-white hover:bg-gray-50 text-soft-coral border-2 border-soft-coral px-8 py-4 rounded-full text-lg font-medium transition-all duration-300 transform hover:scale-105 shadow-lg">
+                    浏览照片画廊 📸
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-deep-gray text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div class="mb-6">
+                <h3 class="text-2xl font-display font-bold text-soft-coral mb-2">梦幻猫舍</h3>
+                <p class="text-gray-300">用心培育，用爱陪伴</p>
+            </div>
+            <div class="border-t border-gray-600 pt-6">
+                <p class="text-gray-400">
+                    © 2025 梦幻猫舍. 每一只猫咪都是我们珍贵的家人 ❤️
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="main.js"></script>
+</body>
+</html>

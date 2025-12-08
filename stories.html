@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>成长故事 - 梦幻猫舍</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&family=Dancing+Script:wght@400;600&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'warm-beige': '#F5F1EB',
+                        'soft-coral': '#E8A87C',
+                        'deep-gray': '#4A4A4A',
+                        'mint-green': '#A8D8B9'
+                    },
+                    fontFamily: {
+                        'display': ['Playfair Display', 'serif'],
+                        'body': ['Inter', 'sans-serif'],
+                        'script': ['Dancing Script', 'cursive']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .story-card {
+            transition: all 0.3s ease;
+        }
+        .story-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+        }
+        .story-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease;
+        }
+        .story-content.expanded {
+            max-height: 1000px;
+        }
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+            transition: all 0.6s ease;
+        }
+        .filter-btn.active {
+            background: linear-gradient(135deg, #E8A87C, #A8D8B9);
+            color: white;
+        }
+        .cat-selector.active {
+            background: linear-gradient(135deg, #E8A87C, #A8D8B9);
+            color: white;
+            border-color: #E8A87C;
+        }
+        .cat-selector {
+            transition: all 0.3s ease;
+        }
+        .cat-selector:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body class="bg-warm-beige text-deep-gray font-body">
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full bg-white/80 backdrop-blur-md z-50 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <h1 class="text-2xl font-display font-bold text-soft-coral">🐱 梦幻猫舍</h1>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-8">
+                        <a href="index.html" class="text-deep-gray hover:text-soft-coral transition-colors">首页</a>
+                        <a href="profiles.html" class="text-deep-gray hover:text-soft-coral transition-colors">猫咪档案</a>
+                        <a href="stories.html" class="text-soft-coral font-medium hover:text-deep-gray transition-colors">成长故事</a>
+                        <a href="gallery.html" class="text-deep-gray hover:text-soft-coral transition-colors">照片画廊</a>
+                    </div>
+                </div>
+                <div class="md:hidden">
+                    <button id="mobile-menu-btn" class="text-deep-gray hover:text-soft-coral">
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div id="mobile-menu" class="md:hidden hidden bg-white/95 backdrop-blur-md">
+            <div class="px-2 pt-2 pb-3 space-y-1">
+                <a href="index.html" class="block px-3 py-2 text-deep-gray hover:text-soft-coral">首页</a>
+                <a href="profiles.html" class="block px-3 py-2 text-deep-gray hover:text-soft-coral">猫咪档案</a>
+                <a href="stories.html" class="block px-3 py-2 text-soft-coral font-medium">成长故事</a>
+                <a href="gallery.html" class="block px-3 py-2 text-deep-gray hover:text-soft-coral">照片画廊</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <section class="pt-24 pb-12 bg-gradient-to-r from-soft-coral/10 to-mint-green/10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center fade-in">
+                <h1 class="text-4xl md:text-6xl font-display font-bold text-deep-gray mb-4">
+                    成长<span class="text-soft-coral">故事</span>
+                </h1>
+                <p class="text-lg text-deep-gray/70 max-w-2xl mx-auto">
+                    每一只猫咪的成长历程都充满了温馨和欢乐，让我们一起回顾这些珍贵的回忆
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Cat Selector Section -->
+    <section class="py-12 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-8 fade-in">
+                <h2 class="text-3xl font-display font-bold text-deep-gray mb-4">选择猫咪查看专属故事</h2>
+                <p class="text-lg text-deep-gray/70">点击猫咪头像，深入了解每只猫咪的成长历程</p>
+            </div>
+            
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-12 fade-in">
+                <button class="cat-selector active p-4 rounded-xl border-2 border-soft-coral text-soft-coral transition-all duration-300" data-cat="all">
+                    <div class="w-16 h-16 mx-auto mb-2 rounded-full bg-gradient-to-br from-soft-coral to-mint-green flex items-center justify-center text-white text-2xl">
+                        🐾
+                    </div>
+                    <p class="text-sm font-medium text-deep-gray">全部故事</p>
+                    <p class="text-xs text-deep-gray/60">所有猫咪</p>
+                </button>
+                <button class="cat-selector p-4 rounded-xl border-2 border-gray-200 hover:border-soft-coral transition-all duration-300" data-cat="xiaohui">
+                    <div class="w-16 h-16 mx-auto mb-2 rounded-full overflow-hidden">
+                        <img src="resources/cat1-main.jpg" alt="小灰" class="w-full h-full object-cover">
+                    </div>
+                    <p class="text-sm font-medium text-deep-gray">小灰</p>
+                    <p class="text-xs text-deep-gray/60">英国短毛猫</p>
+                </button>
+                <button class="cat-selector p-4 rounded-xl border-2 border-gray-200 hover:border-soft-coral transition-all duration-300" data-cat="xiaoxue">
+                    <div class="w-16 h-16 mx-auto mb-2 rounded-full overflow-hidden">
+                        <img src="resources/cat2-main.jpg" alt="小雪" class="w-full h-full object-cover">
+                    </div>
+                    <p class="text-sm font-medium text-deep-gray">小雪</p>
+                    <p class="text-xs text-deep-gray/60">布偶猫</p>
+                </button>
+                <button class="cat-selector p-4 rounded-xl border-2 border-gray-200 hover:border-soft-coral transition-all duration-300" data-cat="dazhuang">
+                    <div class="w-16 h-16 mx-auto mb-2 rounded-full overflow-hidden">
+                        <img src="resources/cat3-main.jpg" alt="大壮" class="w-full h-full object-cover">
+                    </div>
+                    <p class="text-sm font-medium text-deep-gray">大壮</p>
+                    <p class="text-xs text-deep-gray/60">缅因猫</p>
+                </button>
+                <button class="cat-selector p-4 rounded-xl border-2 border-gray-200 hover:border-soft-coral transition-all duration-300" data-cat="gongzhu">
+                    <div class="w-16 h-16 mx-auto mb-2 rounded-full overflow-hidden">
+                        <img src="resources/cat4-main.jpg" alt="公主" class="w-full h-full object-cover">
+                    </div>
+                    <p class="text-sm font-medium text-deep-gray">公主</p>
+                    <p class="text-xs text-deep-gray/60">波斯猫</p>
+                </button>
+                <button class="cat-selector p-4 rounded-xl border-2 border-gray-200 hover:border-soft-coral transition-all duration-300" data-cat="doudou">
+                    <div class="w-16 h-16 mx-auto mb-2 rounded-full overflow-hidden">
+                        <img src="resources/cat5-main.jpg" alt="豆豆" class="w-full h-full object-cover">
+                    </div>
+                    <p class="text-sm font-medium text-deep-gray">豆豆</p>
+                    <p class="text-xs text-deep-gray/60">苏格兰折耳猫</p>
+                </button>
+                <button class="cat-selector p-4 rounded-xl border-2 border-gray-200 hover:border-soft-coral transition-all duration-300" data-cat="baobao">
+                    <div class="w-16 h-16 mx-auto mb-2 rounded-full overflow-hidden">
+                        <img src="resources/cat6-main.jpg" alt="豹豹" class="w-full h-full object-cover">
+                    </div>
+                    <p class="text-sm font-medium text-deep-gray">豹豹</p>
+                    <p class="text-xs text-deep-gray/60">孟加拉猫</p>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Story Type Filter Section -->
+    <section class="py-8 bg-warm-beige">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-6 fade-in">
+                <h3 class="text-2xl font-display font-bold text-deep-gray mb-4">故事类型</h3>
+                <p class="text-lg text-deep-gray/70">选择你感兴趣的故事类型</p>
+            </div>
+            
+            <div class="flex flex-wrap justify-center gap-4 fade-in">
+                <button class="filter-btn active px-6 py-3 rounded-full border-2 border-soft-coral text-soft-coral font-medium transition-all duration-300" data-filter="all">
+                    全部故事
+                </button>
+                <button class="filter-btn px-6 py-3 rounded-full border-2 border-soft-coral text-soft-coral font-medium transition-all duration-300" data-filter="birth">
+                    出生成长
+                </button>
+                <button class="filter-btn px-6 py-3 rounded-full border-2 border-soft-coral text-soft-coral font-medium transition-all duration-300" data-filter="funny">
+                    有趣日常
+                </button>
+                <button class="filter-btn px-6 py-3 rounded-full border-2 border-soft-coral text-soft-coral font-medium transition-all duration-300" data-filter="milestone">
+                    重要时刻
+                </button>
+                <button class="filter-btn px-6 py-3 rounded-full border-2 border-soft-coral text-soft-coral font-medium transition-all duration-300" data-filter="adventure">
+                    冒险经历
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stories Grid -->
+    <section class="py-12 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div id="stories-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Stories will be populated by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-16 bg-gradient-to-r from-soft-coral/10 to-mint-green/10">
+        <div class="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8 fade-in">
+            <h2 class="text-4xl font-display font-bold text-deep-gray mb-6">想要看到更多精彩照片？</h2>
+            <p class="text-lg text-deep-gray/70 mb-8">
+                每个故事都有精美的照片记录，让我们一起欣赏这些珍贵的瞬间
+            </p>
+            <a href="gallery.html" class="bg-soft-coral hover:bg-soft-coral/90 text-white px-8 py-4 rounded-full text-lg font-medium transition-all duration-300 transform hover:scale-105 shadow-lg">
+                浏览照片画廊 📸
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-deep-gray text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div class="mb-6">
+                <h3 class="text-2xl font-display font-bold text-soft-coral mb-2">梦幻猫舍</h3>
+                <p class="text-gray-300">用心培育，用爱陪伴</p>
+            </div>
+            <div class="border-t border-gray-600 pt-6">
+                <p class="text-gray-400">
+                    © 2025 梦幻猫舍. 每一只猫咪都是我们珍贵的家人 ❤️
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="main.js"></script>
+</body>
+</html>
